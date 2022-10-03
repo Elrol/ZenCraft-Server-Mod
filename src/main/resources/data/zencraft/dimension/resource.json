@@ -1,0 +1,12 @@
+{
+    "type": "zencraft:resource",
+    "generator": {
+        "type": "minecraft:noise",
+        "seed": 1561242651,
+        "settings": "minecraft:overworld",
+        "biome_source": {
+            "type": "minecraft:multi_noise",
+            "preset": "minecraft:overworld"
+        }
+    }
+}
