@@ -1,6 +1,8 @@
 package dev.elrol.zencraft;
 
 import dev.elrol.zencraft.dimension.ModDimensions;
+import dev.elrol.zencraft.enchantment.ModEnchantments;
+import dev.elrol.zencraft.events.ModEventHandler;
 import dev.elrol.zencraft.world.feature.ModConfiguredFeatures;
 import dev.elrol.zencraft.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,7 +20,7 @@ public class ZenCraft {
 
     public static final String MODID = "zencraft";
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public ZenCraft() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -26,18 +28,17 @@ public class ZenCraft {
         ModDimensions.register();
         ModConfiguredFeatures.register(eventBus);
         ModPlacedFeatures.register(eventBus);
+        ModEnchantments.register(eventBus);
 
         eventBus.addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new ModEventHandler());
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
+    private void setup(FMLCommonSetupEvent event) {
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("HELLO from server starting");
     }
 }

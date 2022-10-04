@@ -43,4 +43,5 @@ public class ModConfiguredFeatures {
     public static void register(IEventBus bus) {
         CONFIGURED_FEATURES.register(bus);
     }
+
 }

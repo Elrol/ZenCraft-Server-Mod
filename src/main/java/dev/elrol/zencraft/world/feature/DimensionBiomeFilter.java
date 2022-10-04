@@ -1,5 +1,6 @@
 package dev.elrol.zencraft.world.feature;
 
+import dev.elrol.zencraft.ZenCraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -17,15 +18,19 @@ public class DimensionBiomeFilter extends PlacementFilter {
 
     public DimensionBiomeFilter(Predicate<ResourceKey<Level>> levelTest) {
         this.levelTest = levelTest;
+        ZenCraft.LOGGER.info("DBF: Created DimensionBiomeFilter");
     }
 
     @Override
-    protected boolean shouldPlace(PlacementContext context, @NotNull RandomSource rand, @NotNull BlockPos pos) {
-        if(levelTest.test(context.getLevel().getLevel().dimension())) {
-            PlacedFeature feature = context.topFeature().orElseThrow(()-> new IllegalStateException("Tried to biome check an unregistered feature"));
+    protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
+        if (this.levelTest.test(context.getLevel().getLevel().dimension())) {
+            PlacedFeature placedfeature = context.topFeature().orElseThrow(() -> new IllegalStateException("Tried to biome check an unregistered feature"));
             Holder<Biome> biome = context.getLevel().getBiome(pos);
-            return biome.value().getGenerationSettings().hasFeature(feature);
+            boolean flag = biome.value().getGenerationSettings().hasFeature(placedfeature);
+            ZenCraft.LOGGER.info("DBF: Should Place: " + flag);
+            return flag;
         } else {
+            ZenCraft.LOGGER.info("DBF: Shouldn't Be Placed");
             return false;
         }
     }
@@ -34,5 +39,4 @@ public class DimensionBiomeFilter extends PlacementFilter {
     public @NotNull PlacementModifierType<?> type() {
         return PlacementModifierType.BIOME_FILTER;
     }
-
 }
